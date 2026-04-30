@@ -1,0 +1,48 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_35-c32122c0345554a3d8cdc91522bc9b3cab6328c2",
+  "solcVersion": "0.8.35",
+  "solcLongVersion": "0.8.35+commit.47b9dedd",
+  "compilerType": "solc",
+  "toolVersions": {
+    "hardhat": "3.4.2"
+  },
+  "userSourceNameMap": {
+    "contracts/TransferDelegate.sol": "project/contracts/TransferDelegate.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode.linkReferences",
+            "evm.bytecode.object",
+            "evm.bytecode.opcodes",
+            "evm.bytecode.sourceMap",
+            "evm.deployedBytecode.immutableReferences",
+            "evm.deployedBytecode.linkReferences",
+            "evm.deployedBytecode.object",
+            "evm.deployedBytecode.opcodes",
+            "evm.deployedBytecode.sourceMap",
+            "evm.methodIdentifiers"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/TransferDelegate.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.35;\n\ncontract TransferDelegate {\n    function add(uint256 a, uint256 b) public pure returns (uint256) {\n        return a + b;\n    }\n}\n"
+      }
+    }
+  }
+}
