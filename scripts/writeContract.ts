@@ -62,4 +62,14 @@ const hash = await walletClient.writeContract({
   args: [1, 2],
 });
 
+// Send a call where the EOA acts like the contract address for this tx.
+const hash2 = await walletClient.writeContract({
+  abi,
+  address: eoa.address,
+  authorizationList: [authorization],
+  functionName: "add",
+  args: [1, 2],
+});
+
 console.log("Transaction hash:", hash);
+console.log("Transaction hash 2:", hash2);
