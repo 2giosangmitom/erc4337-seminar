@@ -6,6 +6,7 @@
     "lib": ["esnext"],
     "types": ["node"],
     "strict": true,
+    "useUnknownInCatchVariables": false,
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "moduleDetection": "force",

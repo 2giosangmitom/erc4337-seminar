@@ -55,19 +55,19 @@ contract SmartAccount is Account, SignerEIP7702, ERC7821 {
 
     // ERC-7821
     function execute(
-        bytes32 mode,
+        bytes32 mode, // Not used in this implementation, but can be used for future extensions
         bytes calldata executionData
     ) public payable override {
         SessionKey storage key = _getStorage().sessionKeys[msg.sender];
 
-        if (block.timestamp <= key.validUntil) {
-            Call[] memory calls = abi.decode(executionData, (Call[]));
-            for (uint256 i = 0; i < calls.length; i++) {
-                (bool success, ) = calls[i].to.call{value: calls[i].value}(
-                    calls[i].data
-                );
-                require(success, "Call failed");
-            }
+        require(block.timestamp <= key.validUntil, "Session expired");
+
+        Call[] memory calls = abi.decode(executionData, (Call[]));
+        for (uint256 i = 0; i < calls.length; i++) {
+            (bool success, ) = calls[i].to.call{value: calls[i].value}(
+                calls[i].data
+            );
+            require(success, "Call failed");
         }
     }
 
