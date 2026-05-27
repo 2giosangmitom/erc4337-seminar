@@ -9,7 +9,7 @@ transition: slide-left
 mdc: true
 ---
 
-# Account Abstraction với ERC-4337 & EIP-7702
+# Account Abstraction với<br>ERC-4337 & EIP-7702
 
 ---
 transition: fade-out
@@ -20,7 +20,7 @@ layout: two-cols-header
 
 ::left::
 
-<div class="bg-green-300 rounded-xl p-6 border-3 border-green-500 border-opacity-40">
+<div class="bg-green-100 rounded-xl p-6 border-3 border-green-500 border-opacity-40">
 
 ### 🔑 EOA
 
@@ -35,7 +35,7 @@ layout: two-cols-header
 
 ::right::
 
-<div class="bg-blue-300 rounded-xl p-6 border-3 border-blue-500 border-opacity-40">
+<div class="bg-blue-100 rounded-xl p-6 border-3 border-blue-500 border-opacity-40">
 
 ### 📜 Smart Contract Account
 
@@ -60,35 +60,18 @@ transition: fade-out
 
 # Vấn đề của EOA
 
-<div class="grid grid-cols-2 gap-6 mt-4">
-<div>
-
-### ❌ Hạn chế hiện tại
+## Hạn chế hiện tại
 
 - Chỉ dùng **private key** để xác thực giao dịch
-- Mất key → mất tất cả — **không thể recovery**
+- Mất key là mất tất cả - **không thể recovery**
 - Không hỗ trợ 2FA, multisig tích hợp sẵn
 - Không tùy biến được logic xác thực
 - **Luôn phải có ETH** để trả gas
 - Không thể tự động hóa giao dịch
 - Mỗi hành động = 1 giao dịch riêng lẻ
 
-</div>
-<div class="flex flex-col gap-3 mt-2">
-
-```
-❌ User ký tx với private key
-❌ Gửi trực tiếp lên mempool
-❌ Phải tự trả gas bằng ETH
-❌ Chỉ một chữ ký ECDSA duy nhất
-❌ Không thể batch nhiều tx
-```
-
-<div class="bg-red-900 bg-opacity-20 border border-red-500 border-opacity-30 rounded-lg p-4 mt-2 text-sm">
-💡 <strong>Kết quả:</strong> UX phức tạp, onboarding khó khăn, bảo mật hạn chế — rào cản lớn nhất cho người dùng mới.
-</div>
-
-</div>
+<div class="bg-red-100 border-3 border-red-500 border-opacity-40 rounded-lg p-4 mt-6">
+💡 <strong>Kết quả:</strong> UX phức tạp, onboarding khó khăn, bảo mật hạn chế - rào cản lớn nhất cho người dùng mới.
 </div>
 
 ---
@@ -97,30 +80,33 @@ transition: fade-out
 
 # Account Abstraction
 
-**Account Abstraction** là ý tưởng biến wallet thành một smart contract có logic tùy biến.
+#### **Account Abstraction** là ý tưởng biến wallet thành một smart contract có logic tùy biến.
 
 <div class="grid grid-cols-3 gap-4 mt-6">
-<div class="bg-green-900 bg-opacity-20 border border-green-500 border-opacity-30 rounded-xl p-4">
+<div class="bg-green-100 bg-opacity-20 border border-green-500 border-opacity-30 rounded-xl p-4">
 
-#### 🔐 Bảo mật nâng cao
+#### **🔐 Bảo mật nâng cao**
+
 - Passkey / FaceID
 - Multisig linh hoạt
 - Social recovery
 - Spending limits
 
 </div>
-<div class="bg-blue-900 bg-opacity-20 border border-blue-500 border-opacity-30 rounded-xl p-4">
+<div class="bg-blue-100 bg-opacity-20 border border-blue-500 border-opacity-30 rounded-xl p-4">
 
-#### ⛽ Gas linh hoạt
+#### **⛽ Gas linh hoạt**
+
 - Pay gas bằng ERC-20
 - Gasless onboarding
 - Paymaster tài trợ gas
 - Không cần ETH sẵn
 
 </div>
-<div class="bg-purple-900 bg-opacity-20 border border-purple-500 border-opacity-30 rounded-xl p-4">
+<div class="bg-purple-100 bg-opacity-20 border border-purple-500 border-opacity-30 rounded-xl p-4">
 
-#### ⚡ UX mượt mà
+#### **⚡ UX mượt mà**
+
 - Batch transaction
 - Session keys
 - Automation
@@ -131,34 +117,22 @@ transition: fade-out
 
 ---
 transition: fade-out
-layout: center
-class: text-center
 ---
 
 # ERC-4337
 
-Account Abstraction mà không cần thay đổi protocol Ethereum
-
----
-transition: fade-out
----
-
-# ERC-4337 — Tổng quan
-
-ERC-4337 cho phép **Account Abstraction (AA)** trên Ethereum mà **không cần thay đổi giao thức**.
+#### ERC-4337 cho phép **Account Abstraction (AA)** trên Ethereum mà **không cần thay đổi protocol**.
 
 <div class="grid grid-cols-2 gap-6 mt-4">
 <div>
 
-### Thay vì sửa protocol...
+### **Các thành phần chính**
 
-ERC-4337 giới thiệu một luồng mới hoàn toàn:
-
-- 📋 **UserOperation** — đối tượng giao dịch mới
-- 🌐 **Alt-mempool** — mempool phi tập trung riêng
-- 🏛️ **EntryPoint Contract** — hợp đồng điều phối trung tâm
-- 📦 **Bundlers** — node gom và gửi UserOps
-- 💰 **Paymasters** — hợp đồng tài trợ gas
+- 📋 **UserOperation**: đối tượng giao dịch mới
+- 🌐 **Alt-mempool**: mempool phi tập trung riêng
+- 🏛️ **EntryPoint Contract**: hợp đồng điều phối trung tâm
+- 📦 **Bundlers**: node gom và gửi UserOps
+- 💰 **Paymasters**: hợp đồng tài trợ gas
 
 </div>
 <div class="bg-gray-800 bg-opacity-50 rounded-xl p-4 font-mono text-sm">
@@ -677,92 +651,7 @@ Modular Smart Account
 </div>
 
 ---
-transition: fade-out
 layout: center
-class: text-center
 ---
 
-# Tóm tắt kiến trúc ERC-4337
-
----
-transition: fade-out
----
-
-# Tóm tắt
-
-<div class="grid grid-cols-3 gap-4 mt-4">
-
-<div class="bg-blue-900 bg-opacity-20 border border-blue-500 border-opacity-30 rounded-xl p-4">
-
-### 📋 UserOperation
-Đối tượng giao dịch mới thay thế tx thông thường
-
-Chứa đủ thông tin để bundler xử lý và EntryPoint thực thi
-
-</div>
-
-<div class="bg-orange-900 bg-opacity-20 border border-orange-500 border-opacity-30 rounded-xl p-4">
-
-### 📦 Bundler
-Gom UserOps từ alt-mempool, simulate, và submit lên chain
-
-Đóng vai "miner" trong hệ sinh thái AA
-
-</div>
-
-<div class="bg-red-900 bg-opacity-20 border border-red-500 border-opacity-30 rounded-xl p-4">
-
-### 🏛️ EntryPoint
-Hợp đồng trung tâm điều phối validate + execute
-
-Một địa chỉ cố định mỗi chain
-
-</div>
-
-<div class="bg-green-900 bg-opacity-20 border border-green-500 border-opacity-30 rounded-xl p-4">
-
-### 💰 Paymaster
-Tài trợ gas cho user theo điều kiện
-
-Cho phép gasless UX và ERC-20 gas payment
-
-</div>
-
-<div class="bg-purple-900 bg-opacity-20 border border-purple-500 border-opacity-30 rounded-xl p-4">
-
-### 🧠 Smart Account
-Wallet dưới dạng smart contract
-
-Logic xác thực tùy biến, module hóa
-
-</div>
-
-<div class="bg-yellow-900 bg-opacity-20 border border-yellow-500 border-opacity-30 rounded-xl p-4">
-
-### ⚡ EIP-7702
-Nâng EOA thành smart account tức thì
-
-Không cần migrate, giữ nguyên địa chỉ
-
-</div>
-
-</div>
-
----
-layout: center
-class: text-center
----
-
-# Cảm ơn!
-
-<div class="mt-8 text-gray-400">
-
-ERC-4337 · EIP-7702 · Account Abstraction
-
-</div>
-
-<div class="mt-6">
-
-[docs.erc4337.io](https://docs.erc4337.io) · [eips.ethereum.org/EIPS/eip-4337](https://eips.ethereum.org/EIPS/eip-4337)
-
-</div>
+# Cảm ơn mọi người!
