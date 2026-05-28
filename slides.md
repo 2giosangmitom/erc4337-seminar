@@ -448,54 +448,70 @@ flowchart LR
 transition: fade-out
 ---
 
-# Modular Accounts — ERC-6900 & ERC-7579
+# Modular Accounts - ERC-6900 & ERC-7579
 
-Smart accounts ngày càng hướng tới kiến trúc **module hóa**, cho phép tùy biến linh hoạt.
+<div class="grid grid-cols-2 gap-8 mt-6">
 
-<div class="grid grid-cols-2 gap-6 mt-4">
 <div>
 
 ### Tại sao cần module?
 
 - Logic ví ngày càng phức tạp
-- Không muốn audit lại toàn bộ contract khi thêm tính năng
-- Upgrade chỉ một phần, không ảnh hưởng phần còn lại
-- Chia sẻ module giữa nhiều ví
+- Thêm tính năng không cần sửa core wallet
+- Audit theo từng module
+- Tái sử dụng giữa nhiều smart accounts
 
-### Các loại module
+### ERC-6900 vs ERC-7579
 
-| Module | Chức năng |
-|--------|-----------|
-| **Validator** | Xác thực chữ ký, 2FA |
-| **Executor** | Logic thực thi tùy chỉnh |
-| **Hook** | Pre/post-execution hooks |
-| **Fallback** | Xử lý call không khớp |
-
-</div>
-<div class="bg-gray-800 bg-opacity-40 rounded-xl p-4">
-
-```
-Modular Smart Account
-│
-├── [Validator Module]
-│     ├── ECDSA Validator
-│     ├── Passkey Validator (WebAuthn)
-│     └── Multisig Validator
-│
-├── [Executor Module]
-│     ├── Batch Executor
-│     └── Auto-pay Executor
-│
-├── [Hook Module]
-│     ├── Spending Limit Hook
-│     └── Allowlist Hook
-│
-└── [Recovery Module]
-      ├── Social Recovery
-      └── Time-lock Recovery
-```
+| ERC-6900 | ERC-7579 |
+|-----------|-----------|
+| Full framework | Minimal standard |
+| Nhiều interface | Đơn giản hơn |
+| Opinionated | Portable |
 
 </div>
+
+<div>
+
+<div class="text-center border rounded-xl p-3 mb-4">
+🏦 Smart Account
+</div>
+
+<div class="grid grid-cols-2 gap-3">
+
+<div class="border rounded-xl p-3">
+🔐 <b>Validator</b>
+
+- ECDSA
+- Passkey
+- Multisig
+</div>
+
+<div class="border rounded-xl p-3">
+⚡ <b>Executor</b>
+
+- Batch
+- Auto-pay
+</div>
+
+<div class="border rounded-xl p-3">
+🪝 <b>Hook</b>
+
+- Spending Limit
+- Allowlist
+</div>
+
+<div class="border rounded-xl p-3">
+🛟 <b>Recovery</b>
+
+- Social Recovery
+- Time-lock
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 ---
