@@ -248,47 +248,22 @@ transition: fade-out
 
 # Bundlers
 
-**Bundler** là node gom các UserOperation từ alt-mempool và submit lên chain.
+##### **Bundler** là actor của ERC-4337 chịu trách nhiệm thu thập UserOperations, xác thực chúng và submit bundle lên EntryPoint.
 
-<div class="grid grid-cols-2 gap-6 mt-4">
-<div>
+#### **Bundler làm gì?**
 
-### Bundler làm gì?
+- Nhận UserOperations từ alt-mempool hoặc RPC
+- Simulate validation bằng `simulateValidation()`
+- Gom các UserOp hợp lệ thành bundle
+- Gọi `handleOps()` trên EntryPoint
+- Nhận phí gas thông qua `beneficiary`
 
-1. 👀 **Monitor** alt-mempool lấy UserOps mới
-2. 🧪 **Simulate** từng op qua `simulateValidation()`
-3. 📦 **Group** các op hợp lệ thành bundle
-4. 📤 **Submit** bằng `handleOps()` lên EntryPoint
-5. 💸 **Thu phí** — giống như miner
+#### **Tại sao cần Bundler?**
 
-### Tại sao cần Bundler?
-
-- Ethereum base layer không hiểu UserOperation
-- Bundler là "miner cho smart wallet"
+- Ethereum không xử lý UserOperation một cách native
+- Bundler là cầu nối giữa UserOperation và Ethereum transaction
 - Hoạt động phi tập trung, không cần cấp phép
-- Cạnh tranh để gom op và kiếm phí
-
-</div>
-<div>
-
-<div class="bg-orange-900 bg-opacity-20 border border-orange-500 border-opacity-30 rounded-xl p-4 mb-4">
-
-### ⚠️ Rủi ro Bundler
-
-Một UserOp xấu có thể revert **cả bundle** → Bundler phải simulate kỹ trước khi gộp
-
-</div>
-
-<div class="bg-gray-800 bg-opacity-40 rounded-xl p-4 text-sm">
-
-**Bundler phải tuân thủ:**
-- Luật lệ ERC-7562 về storage access
-- Hạn chế opcode trong validation
-- Anti-griefing rules
-
-</div>
-</div>
-</div>
+- Cạnh tranh để kiếm phí thực thi
 
 ---
 transition: fade-out
@@ -296,52 +271,59 @@ transition: fade-out
 
 # Paymasters
 
-**Paymaster** là hợp đồng thông minh có thể **tài trợ gas** cho người dùng.
+#### **Paymaster** là hợp đồng thông minh có thể **tài trợ gas** cho người dùng.
 
-<div class="grid grid-cols-3 gap-4 mt-4">
-<div class="bg-green-900 bg-opacity-20 border border-green-500 border-opacity-30 rounded-xl p-4">
+#### Vai trò
 
-### 🆓 Sponsoring Paymaster
+- Tài trợ gas cho người dùng
+- Cho phép thanh toán bằng token thay vì ETH
+- Áp dụng logic kinh doanh khi xác thực giao dịch
 
-Dự án trả gas thay cho user
+#### **Các mô hình phổ biến**
 
-**Use case:**
+<div class="grid grid-cols-3 gap-4 mt-2">
+
+<div class="bg-green-200 bg-opacity-20 border border-green-500 border-opacity-30 rounded-xl p-4">
+
+#### 🆓 Sponsored
+
+Dự án trả gas cho người dùng
+
+**Ví dụ**
+
 - Gasless onboarding
 - Free first transaction
-- Marketing campaigns
+- Marketing campaign
 
 </div>
-<div class="bg-blue-900 bg-opacity-20 border border-blue-500 border-opacity-30 rounded-xl p-4">
 
-### 💱 ERC-20 Paymaster
+<div class="bg-blue-200 bg-opacity-20 border border-blue-500 border-opacity-30 rounded-xl p-4">
 
-User trả gas bằng token thay vì ETH
+#### 💱 Token Paymaster
 
-**Use case:**
-- USDC gas payment
-- Native token gas
+Người dùng trả gas bằng token
+
+**Ví dụ**
+
+- USDC
+- Native token
 - Không cần giữ ETH
 
 </div>
-<div class="bg-purple-900 bg-opacity-20 border border-purple-500 border-opacity-30 rounded-xl p-4">
 
-### 🔒 Conditional Paymaster
+<div class="bg-purple-200 bg-opacity-20 border border-purple-500 border-opacity-30 rounded-xl p-4">
 
-Tài trợ theo điều kiện logic
+#### 🔒 Conditional
 
-**Use case:**
-- Whitelist address
-- NFT holder benefit
-- Subscription model
+Chỉ tài trợ khi thỏa điều kiện
+
+**Ví dụ**
+
+- Whitelist
+- NFT holder
+- Subscription
 
 </div>
-</div>
-
-<div class="mt-6 bg-gray-800 bg-opacity-40 rounded-xl p-4">
-
-**Paymaster lifecycle:** `validatePaymasterUserOp()` → kiểm tra điều kiện → trả gas → `postOp()` → hoàn tất kế toán
-
-⛓️ Paymaster phải **stake ETH** vào EntryPoint để ngăn chặn tấn công griefing
 
 </div>
 
@@ -388,38 +370,6 @@ Smart Account
 
 </div>
 </div>
-
----
-transition: fade-out
----
-
-# Luồng đầy đủ của ERC-4337
-
-```
-┌─────────┐    UserOperation     ┌──────────────┐
-│  User   │ ──────────────────► │  Alt-Mempool │
-└─────────┘                      └──────┬───────┘
-                                         │ simulate + bundle
-                                         ▼
-┌───────────────────────────────────────────────────────────────┐
-│                         Bundler                               │
-│  1. simulateValidation() off-chain                            │
-│  2. Group valid ops                                           │
-│  3. Submit bundle                                             │
-└────────────────────────────┬──────────────────────────────────┘
-                             │ handleOps()
-                             ▼
-┌───────────────────────────────────────────────────────────────┐
-│                      EntryPoint                               │
-│                                                               │
-│  validateUserOp() ──► validatePaymasterUserOp()               │
-│         │                        │                            │
-│         └──────────────┬─────────┘                            │
-│                        │ execute                              │
-│                        ▼                                      │
-│              Smart Account callData                           │
-└───────────────────────────────────────────────────────────────┘
-```
 
 ---
 transition: fade-out
