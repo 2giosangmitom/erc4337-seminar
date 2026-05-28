@@ -126,7 +126,6 @@ transition: fade-out
 ### **Các thành phần chính**
 
 - 📋 **UserOperation**: đối tượng giao dịch mới
-- 🌐 **Alt-mempool**: mempool phi tập trung riêng
 - 🏛️ **EntryPoint Contract**: hợp đồng điều phối trung tâm
 - 📦 **Bundlers**: node gom và gửi UserOps
 - 💰 **Paymasters**: hợp đồng tài trợ gas (không bắt buộc)
@@ -209,54 +208,39 @@ transition: fade-out
 
 # EntryPoint Contract
 
-**EntryPoint** là hợp đồng trung tâm của ERC-4337 — điều phối toàn bộ quá trình validation và execution.
+#### Là hợp đồng trung tâm của ERC-4337 điều phối toàn bộ quá trình validation và execution.
 
-<div class="grid grid-cols-2 gap-6 mt-4">
-<div>
+**handleOps(ops[], beneficiary)**
 
-### Các chức năng chính
+- Entry point chính của ERC-4337
+- Validate từng UserOperation
+- Thực thi các UserOperation hợp lệ
+- Tính toán và phân phối phí gas
+- Thanh toán cho bundler (`beneficiary`)
 
-**`handleOps(ops[], beneficiary)`**
-- Lặp qua từng UserOp
-- Gọi `validateUserOp()` trên wallet
-- Thực thi nếu hợp lệ
-- Tính và chuyển gas cho bundler
+**simulateValidation(op)**
 
-**`simulateValidation(op)`**
-- Chạy off-chain trước khi gửi lên chain
-- Bundler dùng để kiểm tra op hợp lệ
-- Revert có chủ ý — mang theo dữ liệu trạng thái
+- Được bundler gọi bằng `eth_call`
+- Mô phỏng toàn bộ validation flow
+- Revert có chủ ý để trả về kết quả validation
+- Giúp bundler quyết định có đưa UserOp vào bundle hay không
 
-**`depositTo()` / `balanceOf()`**
-- Wallet và Paymaster nạp ETH vào EntryPoint
-- EntryPoint giữ số dư để thanh toán gas
+---
+transition: fade-out
+---
 
-</div>
-<div class="bg-gray-800 bg-opacity-40 rounded-xl p-4">
+**depositTo() / balanceOf()**
 
-### Luồng thực thi
+- Account và Paymaster nạp ETH vào EntryPoint
+- Deposit được dùng để thanh toán gas
+- EntryPoint quản lý số dư thay mặt cho các thực thể này
 
-```
-Bundler gọi handleOps()
-       │
-       ├─ 1. Validation Phase
-       │     ├── validateUserOp() [account]
-       │     └── validatePaymasterUserOp() [paymaster]
-       │
-       ├─ 2. Execution Phase
-       │     └── execute callData
-       │
-       └─ 3. Post-Op Phase
-             └── postOp() [paymaster]
-```
+**addStake() / unlockStake() / withdrawStake()**
 
-<div class="mt-3 text-sm text-gray-400">
-
-⚡ Chỉ **1 EntryPoint** được deploy mỗi chain, dùng địa chỉ cố định — đảm bảo tương thích.
-
-</div>
-</div>
-</div>
+- Paymaster phải stake trước khi hoạt động
+- Stake bị khóa trong một khoảng thời gian (`unstakeDelaySec`)
+- Cung cấp economic security cho hệ thống
+- Giảm thiểu các hành vi spam và griefing attacks
 
 ---
 transition: fade-out
