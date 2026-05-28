@@ -333,10 +333,7 @@ transition: fade-out
 
 # EIP-7702
 
-**EIP-7702** (Pectra hardfork, 2025) cho phép **EOA tạm thời hoạt động như Smart Contract** trong một giao dịch.
-
-<div class="grid grid-cols-2 gap-6 mt-4">
-<div>
+#### **EIP-7702** (Pectra hardfork, 2025) cho phép **EOA tạm thời hoạt động như Smart Contract** trong một giao dịch.
 
 ### Cơ chế hoạt động
 
@@ -344,37 +341,25 @@ transition: fade-out
 - Trong thời gian giao dịch, EOA **"mượn" bytecode** từ contract đó
 - Sau giao dịch, EOA trở về trạng thái bình thường (hoặc giữ code nếu muốn)
 
+---
+transition: fade-out
+---
+
 ### So sánh với ERC-4337
 
-| | ERC-4337 | EIP-7702 |
-|--|----------|----------|
-| Account mới | Smart Account | EOA nâng cấp |
-| Thay đổi protocol | Không | Có (Pectra) |
-| Gas | Cao hơn | Thấp hơn |
-| Tương thích | Mọi chain | Post-Pectra |
-
-</div>
-<div>
+|                   | ERC-4337      | EIP-7702     |
+|-------------------|---------------|--------------|
+| Account mới       | Smart Account | EOA nâng cấp |
+| Thay đổi protocol | Không         | Có (Pectra)  |
+| Gas               | Cao hơn       | Thấp hơn     |
+| Tương thích       | Mọi chain     | Post-Pectra  |
 
 ### Use cases
 
-<div class="space-y-3">
-<div class="bg-green-900 bg-opacity-20 border border-green-500 border-opacity-30 rounded-lg p-3">
-🔄 <strong>Batch transactions</strong> — gom nhiều hành động trong 1 tx
-</div>
-<div class="bg-blue-900 bg-opacity-20 border border-blue-500 border-opacity-30 rounded-lg p-3">
-⛽ <strong>Gas sponsorship</strong> — kết hợp với Paymaster
-</div>
-<div class="bg-purple-900 bg-opacity-20 border border-purple-500 border-opacity-30 rounded-lg p-3">
-🔑 <strong>Session keys</strong> — ủy quyền giới hạn cho dApp
-</div>
-<div class="bg-orange-900 bg-opacity-20 border border-orange-500 border-opacity-30 rounded-lg p-3">
-🔐 <strong>Multisig nhanh</strong> — không cần migrate wallet
-</div>
-</div>
-
-</div>
-</div>
+- **Batch transactions:** gom nhiều hành động trong 1 tx
+- **Gas sponsorship:** kết hợp với Paymaster
+- **Session keys:** ủy quyền giới hạn cho dApp
+- **Multisig nhanh:** không cần migrate wallet
 
 ---
 transition: fade-out
