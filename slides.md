@@ -367,106 +367,82 @@ transition: fade-out
 
 # ERC-4337 + EIP-7702
 
-<div class="grid grid-cols-2 gap-6 mt-4">
+<div class="grid grid-cols-2 gap-8 mt-6">
+
 <div>
 
-### EIP-7702 UserOps
+### EOA → Smart Account
 
-Kể từ khi Pectra ra mắt, ERC-4337 **hỗ trợ gửi UserOperation từ EOA đã được 7702 upgrade**.
+Sau Pectra, EOA có thể gửi UserOperation thông qua EIP-7702 delegation.
 
-Đây là bước tiến quan trọng:
+Flow:
 
-- EOA ký authorization → tạm thời có smart account code
-- Gửi UserOperation qua EntryPoint như bình thường
-- Hưởng toàn bộ tính năng AA: gasless, batch, session key...
+1. Ký authorization
+2. Delegate sang smart account logic
+3. Gửi UserOp qua EntryPoint
+4. Dùng toàn bộ AA features
+
+</div>
+
+<div>
 
 ### Lợi ích
 
-- ✅ Không cần deploy smart account mới
-- ✅ Giữ nguyên địa chỉ ví cũ
-- ✅ Chi phí thấp hơn
-- ✅ Tương thích ngược với dApp cũ
+- Giữ nguyên địa chỉ ví
+- Không cần deploy wallet mới
+- Hỗ trợ gas sponsorship
+- Hỗ trợ batching
+- Hỗ trợ session keys
 
 </div>
-<div class="bg-gray-800 bg-opacity-40 rounded-xl p-4 font-mono text-sm">
-
-```typescript
-// Tạo bundler client với EIP-7702
-import { createFreeBundler } from '@etherspot/free-bundler';
-import { mainnet } from "viem/chains";
-
-const bundlerClient = createFreeBundler({
-  chain: mainnet
-});
-
-// EOA ký authorization + gửi UserOp
-const userOp = await bundlerClient
-  .prepareUserOperation({
-    account: eoaAccount,     // EOA thông thường
-    authorization: {
-      contractAddress: smartAccountImpl,
-    },
-    calls: [
-      { to: targetContract, data: callData }
-    ]
-  });
-
-await bundlerClient.sendUserOperation(userOp);
-```
 
 </div>
+
+<div class="mt-8 text-center text-sm opacity-70">
+
+EOA + 7702 + ERC-4337 = Smart Account UX mà không cần migrate ví
+
 </div>
 
 ---
 transition: fade-out
 ---
 
-# Session Keys & Delegation
+# Session Keys
 
-**Session Keys** cho phép ủy quyền giới hạn cho dApp — không cần ký mỗi giao dịch.
+### Ý tưởng
 
-<div class="grid grid-cols-2 gap-6 mt-4">
-<div>
+User cấp một key tạm thời cho dApp.
 
-### Cách hoạt động
+Session key chỉ được phép:
 
-1. User tạo một **session key** tạm thời
-2. Cấp quyền hạn chế: thời gian, contract, giá trị tối đa
-3. dApp dùng session key để ký UserOp
-4. EntryPoint validate qua smart account logic
+- Trong thời gian nhất định
+- Với contract cụ thể
+- Trong hạn mức xác định
 
-### Ứng dụng thực tế
+### Use Cases
 
-- 🎮 **Gaming**: tự động ký move mà không popup liên tục
-- 🤖 **DeFi bots**: rebalance tự động trong giới hạn
-- 📱 **Mobile**: ký nhanh không cần xác nhận lại
-- 🛒 **E-commerce**: thanh toán theo hạn mức
+- 🎮 Gaming
+- 🤖 Trading bots
+- 🛒 Recurring payments
 
-</div>
-<div>
+---
+transition: fade-out
+layout: center
+---
 
+```mermaid {scale: 0.65}
+flowchart LR
+    U[User] -->|create| SK[Session Key]
+
+    SK --> P["Policy<br/>⏳ 24h<br/>🦄 Uniswap Only<br/>💵 Max 100 USDC"]
+
+    P --> D["dApp signs UserOperation"]
+
+    D --> SA["Smart Account validates"]
+
+    SA --> OK["✅ Execute Transaction"]
 ```
-User tạo Session Key
-        │
-        ▼
-┌──────────────────────────┐
-│  Session Key Policy      │
-│  - Thời hạn: 24 giờ     │
-│  - Contract: Uniswap     │
-│  - Max value: 100 USDC   │
-│  - Signer: temp_key      │
-└────────────┬─────────────┘
-             │ lưu vào smart account
-             ▼
-dApp ký UserOp bằng temp_key
-             │
-             ▼
-Smart Account validate ✅
-(không cần user ký lại)
-```
-
-</div>
-</div>
 
 ---
 transition: fade-out
