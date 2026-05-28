@@ -463,11 +463,11 @@ transition: fade-out
 
 ### ERC-6900 vs ERC-7579
 
-| ERC-6900 | ERC-7579 |
-|-----------|-----------|
-| Full framework | Minimal standard |
-| Nhiều interface | Đơn giản hơn |
-| Opinionated | Portable |
+| ERC-6900        | ERC-7579         |
+|-----------------|------------------|
+| Full framework  | Minimal standard |
+| Nhiều interface | Đơn giản hơn     |
+| Opinionated     | Portable         |
 
 </div>
 
