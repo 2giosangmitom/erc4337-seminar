@@ -331,61 +331,7 @@ Chỉ tài trợ khi thỏa điều kiện
 transition: fade-out
 ---
 
-# Smart Accounts
-
-**Smart Account** là nền tảng của Account Abstraction — wallet được xây dựng như một smart contract.
-
-<div class="grid grid-cols-2 gap-6 mt-4">
-<div>
-
-### Khả năng vượt trội so với EOA
-
-- ✅ **`validateUserOp()`** — logic xác thực tùy biến
-- ✅ Tích hợp với **EntryPoint** để validate & execute  
-- ✅ Dùng modules qua ERC-6900 hoặc ERC-7579
-- ✅ Hỗ trợ **passkey, biometrics, multisig**
-- ✅ Có thể deploy bằng `initCode` + CREATE2 — **counterfactual deployment**
-
-### Mô hình module hóa
-
-</div>
-<div>
-
-```
-Smart Account
-    │
-    ├── Validation Module
-    │     ├── ECDSA signer
-    │     ├── Passkey signer
-    │     └── Multisig policy
-    │
-    ├── Execution Module
-    │     ├── Batch executor
-    │     └── Delegatecall hook
-    │
-    └── Recovery Module
-          ├── Social recovery
-          └── Guardian management
-```
-
-</div>
-</div>
-
----
-transition: fade-out
-layout: center
-class: text-center
----
-
 # EIP-7702
-
-Nâng cấp EOA thành Smart Account ngay trong một giao dịch
-
----
-transition: fade-out
----
-
-# EIP-7702 — EOA gặp Smart Contract
 
 **EIP-7702** (Pectra hardfork, 2025) cho phép **EOA tạm thời hoạt động như Smart Contract** trong một giao dịch.
 
@@ -434,7 +380,7 @@ transition: fade-out
 transition: fade-out
 ---
 
-# ERC-4337 + EIP-7702 — Bộ đôi hoàn hảo
+# ERC-4337 + EIP-7702
 
 <div class="grid grid-cols-2 gap-6 mt-4">
 <div>
