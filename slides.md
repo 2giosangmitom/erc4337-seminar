@@ -20,7 +20,7 @@ layout: two-cols-header
 
 ::left::
 
-<div class="bg-green-100 rounded-xl p-6 border-3 border-green-500 border-opacity-40">
+<div class="bg-green-100 rounded-xl p-6 border border-green-500 border-opacity-40">
 
 ### 🔑 EOA
 
@@ -35,7 +35,7 @@ layout: two-cols-header
 
 ::right::
 
-<div class="bg-blue-100 rounded-xl p-6 border-3 border-blue-500 border-opacity-40">
+<div class="bg-blue-100 rounded-xl p-6 border border-blue-500 border-opacity-40">
 
 ### 📜 Smart Contract Account
 
@@ -70,7 +70,7 @@ transition: fade-out
 - Không thể tự động hóa giao dịch
 - Mỗi hành động = 1 giao dịch riêng lẻ
 
-<div class="bg-red-100 border-3 border-red-500 border-opacity-40 rounded-lg p-4 mt-6">
+<div class="bg-red-100 border border-red-500 border-opacity-40 rounded-lg p-4 mt-6">
 💡 <strong>Kết quả:</strong> UX phức tạp, onboarding khó khăn, bảo mật hạn chế - rào cản lớn nhất cho người dùng mới.
 </div>
 
@@ -123,37 +123,46 @@ transition: fade-out
 
 #### ERC-4337 cho phép **Account Abstraction (AA)** trên Ethereum mà **không cần thay đổi protocol**.
 
-<div class="grid grid-cols-2 gap-6 mt-4">
-<div>
-
 ### **Các thành phần chính**
 
 - 📋 **UserOperation**: đối tượng giao dịch mới
 - 🌐 **Alt-mempool**: mempool phi tập trung riêng
 - 🏛️ **EntryPoint Contract**: hợp đồng điều phối trung tâm
 - 📦 **Bundlers**: node gom và gửi UserOps
-- 💰 **Paymasters**: hợp đồng tài trợ gas
+- 💰 **Paymasters**: hợp đồng tài trợ gas (không bắt buộc)
 
-</div>
-<div class="bg-gray-800 bg-opacity-50 rounded-xl p-4 font-mono text-sm">
+---
+transition: fade-out
+---
 
+<div class="h-full flex items-center justify-center">
+
+```mermaid {scale: 0.75}
+sequenceDiagram
+    participant User
+    participant Wallet as Wallet App
+    participant Bundler
+    participant EntryPoint
+    participant Paymaster
+    participant Account as Smart Account
+
+    User->>Wallet: Sign UserOperation
+    Wallet->>Bundler: Send UserOperation
+
+    Bundler->>EntryPoint: handleOps()
+
+    EntryPoint->>Account: validateUserOp()
+    Account-->>EntryPoint: OK
+
+    opt Gas Sponsored
+        EntryPoint->>Paymaster: validatePaymasterUserOp()
+        Paymaster-->>EntryPoint: Approve sponsorship
+    end
+
+    EntryPoint->>Account: execute()
+    Account-->>EntryPoint: Success
 ```
-User
-  │
-  ▼ UserOperation
-Alt-mempool
-  │
-  ▼ bundle
-Bundler
-  │
-  ▼ handleOps()
-EntryPoint
-  ├── validateUserOp()
-  ├── validatePaymasterUserOp()
-  └── execute()
-```
 
-</div>
 </div>
 
 ---
@@ -162,34 +171,32 @@ transition: fade-out
 
 # UserOperation
 
-**UserOperation** là đối tượng thay thế giao dịch thông thường trong ERC-4337.
+#### **UserOperation** là đối tượng thay thế giao dịch thông thường trong ERC-4337.
 
 <div class="grid grid-cols-2 gap-6 mt-4">
 <div>
 
-| Field | Mô tả |
-|-------|-------|
-| `sender` | Địa chỉ smart account |
-| `nonce` | Nonce chống replay |
-| `initCode` | Tạo account mới nếu chưa có |
-| `callData` | Hành động cần thực thi |
-| `callGasLimit` | Gas cho execution |
-| `verificationGasLimit` | Gas cho validation |
-| `paymasterAndData` | Thông tin paymaster |
-| `signature` | Chữ ký (có thể tùy biến) |
+| Field              | Ý nghĩa                         |
+| ------------------ | ------------------------------- |
+| `sender`           | Smart Account                   |
+| `nonce`            | Chống replay                    |
+| `callData`         | Hành động cần thực hiện         |
+| `signature`        | Chữ ký của user                 |
+| `initCode`         | Deploy account nếu chưa tồn tại |
+| `paymasterAndData` | Thông tin sponsor gas           |
 
 </div>
 <div>
 
-<div class="bg-yellow-900 bg-opacity-20 border border-yellow-500 border-opacity-30 rounded-xl p-4 mb-4">
+<div class="bg-yellow-100 bg-opacity-20 border border-yellow-500 border-opacity-30 rounded-xl p-4 mb-4">
 
 💡 **Điểm khác biệt**: UserOperation **không phải là giao dịch Ethereum**. Nó được gom lại bởi Bundler và gửi lên chain qua `handleOps()`.
 
 </div>
 
-<div class="bg-blue-900 bg-opacity-20 border border-blue-500 border-opacity-30 rounded-xl p-4">
+<div class="bg-sky-100 bg-opacity-20 border border-blue-500 border-opacity-30 rounded-xl p-4">
 
-✅ `initCode` cho phép **tạo ví không cần EOA hay ETH trả trước** — chỉ cần tạo và dùng ngay.
+✅ `initCode` cho phép **tạo ví không cần EOA hay ETH trả trước** - chỉ cần tạo và dùng ngay.
 
 </div>
 
