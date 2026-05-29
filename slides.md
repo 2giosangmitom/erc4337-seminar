@@ -248,7 +248,7 @@ transition: fade-out
 
 # Bundlers
 
-##### **Bundler** là actor của ERC-4337 chịu trách nhiệm thu thập UserOperations, xác thực chúng và submit bundle lên EntryPoint.
+##### **Bundler** là thành phần của ERC-4337 chịu trách nhiệm thu thập UserOperations, xác thực chúng và submit bundle lên EntryPoint.
 
 #### **Bundler làm gì?**
 
@@ -347,12 +347,13 @@ transition: fade-out
 
 ### So sánh với ERC-4337
 
-|                   | ERC-4337      | EIP-7702     |
-|-------------------|---------------|--------------|
-| Account mới       | Smart Account | EOA nâng cấp |
-| Thay đổi protocol | Không         | Có (Pectra)  |
-| Gas               | Cao hơn       | Thấp hơn     |
-| Tương thích       | Mọi chain     | Post-Pectra  |
+|                     | ERC-4337                 | EIP-7702                |
+| ------------------- | ------------------------ | ----------------------- |
+| Cách tiếp cận       | Smart Account riêng biệt | Nâng cấp EOA hiện có    |
+| Thay đổi protocol   | ❌ Không cần             | ✅ Cần Pectra           |
+| Gas                 | Cao hơn                  | Thấp hơn                |
+| Tương thích chain   | Hầu hết EVM chain        | Chỉ chain hỗ trợ Pectra |
+| Mức độ trưởng thành | Đã phổ biến              | Mới hơn                 |
 
 ### Use cases
 
